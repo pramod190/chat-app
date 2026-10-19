@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat App</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f2f5fb;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+    .app { width: min(760px, 100%); background: #fff; border: 1px solid #e5e9f2; border-radius: 20px; overflow: hidden; box-shadow: 0 24px 70px rgba(25, 42, 80, .12); }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 26px; color: #fff; background: linear-gradient(120deg, #3730a3, #6366f1); }
+    header h1 { font-size: 1.25rem; margin: 0 0 4px; }
+    header p { margin: 0; font-size: .88rem; color: #e0e7ff; }
+    .status { display: flex; align-items: center; gap: 8px; white-space: nowrap; font-size: .82rem; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: #fbbf24; }
+    .dot.connected { background: #4ade80; }
+    .join { padding: 16px 26px; border-bottom: 1px solid #edf0f6; display: flex; gap: 10px; align-items: center; }
+    input { min-width: 0; font: inherit; border: 1px solid #dce2ef; border-radius: 10px; padding: 12px 13px; outline: none; }
+    input:focus { border-color: #6366f1; box-shadow: 0 0 0 3px #6366f122; }
+    #username { flex: 1; }
+    button { font: inherit; font-weight: 650; cursor: pointer; border: 0; border-radius: 10px; padding: 12px 17px; color: #fff; background: #4f46e5; }
+    button:hover { background: #4338ca; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    #messages { list-style: none; margin: 0; padding: 22px 26px; min-height: 330px; max-height: 48vh; overflow-y: auto; background: #fbfcff; }
+    #messages li { margin: 0 0 14px; overflow-wrap: anywhere; }
+    .system { text-align: center; color: #788197; font-size: .84rem; padding: 5px; }
+    .chat { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+    .chat .name { font-size: .78rem; font-weight: 700; color: #4f46e5; }
+    .chat .bubble { padding: 10px 13px; background: #eef1ff; border-radius: 4px 14px 14px 14px; line-height: 1.45; max-width: 100%; }
+    .composer { display: flex; gap: 10px; padding: 18px 26px 24px; }
+    #message { flex: 1; }
+    #hint { margin: -12px 26px 20px; color: #8a92a6; font-size: .78rem; }
+    @media (max-width: 520px) {
+      body { padding: 0; }
+      .app { min-height: 100vh; border-radius: 0; }
+      header, .join, .composer { padding-left: 16px; padding-right: 16px; }
+      #messages { padding: 18px 16px; min-height: 45vh; }
+      .status { font-size: .72rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <h1>Live Chat</h1>
+        <p>A tiny real-time chat room</p>
+      </div>
+      <div class="status"><span id="status-dot" class="dot"></span><span id="status-text">Disconnected</span></div>
+    </header>
+
+    <form id="join-form" class="join">
+      <input id="username" name="username" maxlength="24" placeholder="Choose a username" autocomplete="nickname" required />
+      <button type="submit">Join chat</button>
+    </form>
+
+    <ul id="messages" aria-live="polite" aria-label="Chat messages">
+      <li class="system">Choose a username to join the conversation.</li>
+    </ul>
+
+    <form id="chat-form" class="composer">
+      <input id="message" name="message" placeholder="Write a message..." autocomplete="off" disabled required />
+      <button id="send" type="submit" disabled>Send</button>
+    </form>
+    <p id="hint">Messages are shared with everyone currently connected.</p>
+  </main>
+  <script src="/script.js"></script>
+</body>
+</html>
